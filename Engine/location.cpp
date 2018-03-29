@@ -9,7 +9,7 @@ Location::Location(int width, int height, const unsigned char* tiles)
   this->_width = width;
   this->_height = height;
   this->tiles = tiles;
-  _entitiesLength = 5;
+  _entitiesLength = 10;
   entities = new Entity*[_entitiesLength];
   if(entities != NULL)
   {
@@ -28,6 +28,11 @@ Location::Location(int width, int height, const unsigned char* tiles)
 
 unsigned char Location::getTile(int x, int y)
 {
+  if(x < 0 || y < 0 || x >= _width || y >= _height)
+  {
+    return 'W';
+  }
+  
   return pgm_read_word(tiles + (x + y * this->_width));
 }
 
@@ -77,7 +82,6 @@ bool Location::removeEntity(Entity* entity)
   {
     if(entity == entities[i])
     {
-      delete entities[i];
       entities[i] = NULL;
       entityCount--;
       return true;
@@ -97,15 +101,20 @@ int Location::entitiesLength()
   return _entitiesLength;
 }
 
-bool Location::activateEntity(int x, int y)
+bool Location::activateEntity(Entity* entity, int x, int y)
 {
   for(int i = 0; i < _entitiesLength; i++)
   {
     Entity* ent = entities[i];
-    if(ent != NULL)
+    if(ent != NULL && ent != entity)
     {
-      int xdiff = ent->x() - x;
-      int ydiff = ent->y() - y;
+      int entx = ent->x() + 4;
+      int enty = ent->y() + 4;
+      int xdiff = entx - x;
+      int ydiff = enty - y;
+      /*Serial.print(xdiff);
+      Serial.print(",");
+      Serial.println(ydiff);*/
       if(xdiff > -4 && xdiff < 4 && ydiff > -4 && ydiff < 4)
       {
         entities[i]->activate();

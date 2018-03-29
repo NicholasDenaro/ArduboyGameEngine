@@ -14,6 +14,16 @@ void View::draw(Drawer drawer, Location location, Entity tiles, unsigned char* t
   int yoffset = _y / 8;
   int xend = xoffset + _width / 8;
   int yend = yoffset + _height / 8;
+
+  /*if(xend > location.width())
+  {
+    xend = location.width();
+  }
+  
+  if(yend > location.height())
+  {
+    yend = location.height();
+  }*/
   
   for(int j = yoffset; j <= yend; j++)
   {
@@ -53,6 +63,16 @@ void View::centerOn(Location location, Entity entity)
   if(_y + _height > location.height() * 8)
   {
     _y = location.height() * 8 - _height;
+  }
+
+  if(_x < 0)
+  {
+    _x = 0;
+  }
+
+  if(_y < 0)
+  {
+    _y = 0;
   }
 }
 

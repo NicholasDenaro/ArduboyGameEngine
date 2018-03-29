@@ -24,7 +24,7 @@ class Location
   bool removeEntity(Entity* entity);
   int entitiesLength();
   Entity** getEntities();
-  bool activateEntity(int x, int y);
+  bool activateEntity(Entity* entity, int x, int y);
 };
 
 #endif

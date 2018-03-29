@@ -24,7 +24,7 @@ namespace StaticSprites
 namespace Texts
 {
   static const PROGMEM char signGreetings[] = {"Hello World! This is a long winded sign, so be ready for some text! This is a small demo for the engine that I will be writing. You can find the source code on my GitHub page /NicholasDenaro. Please let me know if you like it!"};
-  static const PROGMEM char signToSpring[] = {"North to Springs"};
+  static const PROGMEM char signToFarm[] = {"North to Farm"};
   static const PROGMEM char signToMine[] = {"South to Mines"};
   static const PROGMEM char signToTown[] = {"East to Town"};
 
@@ -51,7 +51,7 @@ namespace Maps
       "t       |       t"
       "tttttttt|tttttttt";
 
-      const PROGMEM unsigned char house[37] = 
+      const PROGMEM unsigned char house[31] = 
       "WWWWWW"
       "======"
       "======"
@@ -63,16 +63,17 @@ class Game
 {
   private:
   Arduboy2 arduboy;
-  Player* player;
   Drawer drawer;
   Entity tiles;
   Location* _location;
+  Location** locations;
   View view;
   int _imageIndex;
   int counter;
   unsigned char tileMap[256];
   
   public:
+  static Player* player;
   static Game game;
   Game();
   Game(Arduboy2 arduboy);
@@ -80,6 +81,7 @@ class Game
   void start();
 
   Location* location();
+  void setLocation(Location* location);
   int imageIndex();
 
   void showText(const char* text);
