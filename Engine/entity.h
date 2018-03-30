@@ -8,16 +8,16 @@ class Entity
   protected:
   int _x;
   int _y;
-  Sprite _sprite;
+  Sprite* _sprite;
   
   public:
   Entity();
-  Entity(int x, int y, Sprite sprite);
+  Entity(int x, int y, Sprite* sprite);
   virtual void tick(Arduboy2 arduboy);
   void setPos(int x, int y);
   int x();
   int y();
-  Sprite sprite();
+  Sprite* sprite();
   virtual int imageIndex(int index);
   virtual bool activate();
 };

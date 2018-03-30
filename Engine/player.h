@@ -11,7 +11,7 @@ class Player : public Entity
   public:
   bool moved;
   Player();
-  Player(int x, int y, Sprite sprite);
+  Player(int x, int y, Sprite* sprite);
   void tick(Arduboy2 arduboy) override;
   void movePos(int dx, int dy);
   int dir();

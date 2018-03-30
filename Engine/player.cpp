@@ -1,9 +1,9 @@
 #include "game.h"
 #include "player.h"
 
-Player::Player() : Player(0, 0, Sprite()) {}
+Player::Player() : Player(0, 0, NULL) {}
 
-Player::Player(int x, int y, Sprite sprite) : Entity(x, y, sprite)
+Player::Player(int x, int y, Sprite* sprite) : Entity(x, y, sprite)
 {
   _dir = 0;
   moved = false;
@@ -39,10 +39,10 @@ void Player::tick(Arduboy2 arduboy)
   if(arduboy.pressed(A_BUTTON))
   {
     int shift = _dir - 1;
-    Game::game.location()->activateEntity(this, _x + 4 - shift * 6, _y + 4);
+    Game::game->location()->activateEntity(this, _x + 4 - shift * 6, _y + 4);
   }
   
-  Game::game.location()->activateEntity(this, _x + 4, _y + 4);
+  Game::game->location()->activateEntity(this, _x + 4, _y + 4);
 }
 
 void Player::movePos(int dx, int dy)
@@ -83,8 +83,8 @@ void Player::movePos(int dx, int dy)
         yshift = -8;
       }
       
-      char tile = Game::game.location()->getTile((ii + i * 2 + xshift) / 8, (jj + j * 2 + yshift) / 8);
-      if(tile == 'W' || tile == 'H' || tile =='T' || tile == 't')
+      char tile = Game::game->location()->getTile((ii + i * 2 + xshift) / 8, (jj + j * 2 + yshift) / 8);
+      if(tile == 'W' || tile == 'H' || tile =='T' || tile == 't' || tile == 'B' || tile == 'b' || tile == 'd' || tile == 'Q' || tile == 'O')
       {
         return;
       }

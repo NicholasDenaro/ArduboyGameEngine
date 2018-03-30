@@ -60,6 +60,11 @@ void Location::tick(Arduboy2 arduboy)
 
 bool Location::addEntity(Entity* entity)
 {
+  if(entity == NULL)
+  {
+    Serial.println("OOM?");
+  }
+  
   if(entityCount < _entitiesLength)
   {
     for(int i = 0; i < _entitiesLength; i++)

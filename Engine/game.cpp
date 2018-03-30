@@ -9,7 +9,7 @@
 
 int freeRam();
 
-Game Game::game = Game();
+Game* Game::game = NULL;
 
 Player* Game::player = NULL;
 
@@ -20,28 +20,37 @@ Game::Game(Arduboy2 arduboy)
   arduboy = arduboy;
   drawer = Drawer(arduboy);
   tiles = Entity(0, 0, StaticSprites::tileSprite);
-  Game::player = new Player(64, 64, StaticSprites::playerSprite);
+  Game::player = new Player(8, 8, StaticSprites::playerSprite);
   view = View(WIDTH, HEIGHT);
   _imageIndex = 0;
-  tileMap[256] = new unsigned char[256];
+  tileMap = new unsigned char[256];
   tileMap[' '] = 0;
-  tileMap['T'] = 1;
-  tileMap['H'] = 2;
-  tileMap['W'] = 2;
-  tileMap['_'] = 3;
-  tileMap['|'] = 8;
-  tileMap['%'] = 9;
-  tileMap['D'] = 10;
-  tileMap['-'] = 16;
-  tileMap['t'] = 17;
-  tileMap[':'] = 24;
-  tileMap['='] = 25;
-  locations = new Location*[2];
+  tileMap['%'] = 1;
+  tileMap[':'] = 2;
+  tileMap['|'] = 4;
+  tileMap['-'] = 5;
+  tileMap['T'] = 8;
+  tileMap['t'] = 9;
+  tileMap['B'] = 10;
+  tileMap['O'] = 11;
+  tileMap['Q'] = 12;
+  tileMap['H'] = 16;
+  tileMap['W'] = 16;
+  tileMap['D'] = 17;
+  tileMap['_'] = 18;
+  tileMap['='] = 20;
+  tileMap['b'] = 22;
+  tileMap['d'] = 23;
+  locations = new Location*[7];
   locations[0] = new Location(17, 16, Maps::loc);
   locations[1] = new Location(6, 5, Maps::house);
-  _location = locations[0];
+  locations[2] = new Location(5, 4, Maps::house2);
+  locations[3] = new Location(32, 14, Maps::farm);
+  locations[4] = new Location(8, 5, Maps::farmhouse);
+  locations[5] = new Location(8, 5, Maps::mine);
+  locations[6] = new Location(15, 5, Maps::town);
+  _location = locations[4];
   counter = 0;
-  
 }
 
 
@@ -70,6 +79,7 @@ void Game::tick()
   if(arduboy.justPressed(A_BUTTON))
   {
     counter++;
+    Serial.println(freeRam());
   }
   
   arduboy.display();
@@ -78,12 +88,29 @@ void Game::tick()
 void Game::start()
 {
   bool success = _location->addEntity(player);
+  
   locations[0]->addEntity(new Sign(3 * 8, 6 * 8, Texts::signGreetings));
   locations[0]->addEntity(new Sign(9 * 8, 2 * 8, Texts::signToFarm));
   locations[0]->addEntity(new Sign(11 * 8, 6 * 8, Texts::signToTown));
   locations[0]->addEntity(new Sign(10 * 8, 12 * 8, Texts::signToMine));
-  locations[0]->addEntity(new Door(4 * 8, 3 * 8, 3 * 8, 3 * 8, locations[1]));
+  
+  locations[0]->addEntity(new Door(4 * 8, 3 * 8, 3 * 8, 3 * 8, locations[1])); // to north house
   locations[1]->addEntity(new Door(3 * 8, 4 * 8, 4 * 8, 4 * 8, locations[0]));
+  
+  locations[0]->addEntity(new Door(3 * 8, 12 * 8, 3 * 8, 2 * 8, locations[2])); // to south house
+  locations[2]->addEntity(new Door(3 * 8, 3 * 8, 3 * 8, 13 * 8, locations[0]));
+  
+  locations[0]->addEntity(new Door(8 * 8, 0 * 8, 3 * 8, 12 * 8, locations[3])); // to farm
+  locations[3]->addEntity(new Door(3 * 8, 13 * 8, 8 * 8, 1 * 8, locations[0]));
+  
+  locations[3]->addEntity(new Door(4 * 8, 3 * 8, 3 * 8, 3 * 8, locations[4])); // to farmhouse
+  locations[4]->addEntity(new Door(3 * 8, 4 * 8, 4 * 8, 4 * 8, locations[3]));
+  
+  locations[0]->addEntity(new Door(8 * 8, 15 * 8, 4 * 8, 1 * 8, locations[5])); // to mine
+  locations[5]->addEntity(new Door(4 * 8, 0 * 8, 8 * 8, 14 * 8, locations[0]));
+  
+  locations[0]->addEntity(new Door(16 * 8, 7 * 8, 1 * 8, 2 * 8, locations[6])); // to town
+  locations[6]->addEntity(new Door(0 * 8, 2 * 8, 15 * 8, 7 * 8, locations[0]));
 }
 
 Location* Game::location()

@@ -1,9 +1,9 @@
 #include "entity.h"
 #include "sprite.h"
 
-Entity::Entity() : Entity(0, 0, Sprite()) {}
+Entity::Entity() : Entity(0, 0, new Sprite()) {}
 
-Entity::Entity(int x, int y, Sprite sprite)
+Entity::Entity(int x, int y, Sprite* sprite)
 {
   this->_sprite = sprite;
   this->setPos(x, y);
@@ -30,7 +30,7 @@ int Entity::y()
   return _y;
 }
 
-Sprite Entity::sprite()
+Sprite* Entity::sprite()
 {
   return this->_sprite;
 }

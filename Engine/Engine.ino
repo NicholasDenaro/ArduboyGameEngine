@@ -13,24 +13,49 @@ void setup() {
   
   Serial.begin(9600);
   Serial.println(freeRam());
-  Game::game = Game(arduboy);
-  //delay(4000);
-  Game::game.start();
-  Serial.println(freeRam());
-  
+  Game::game = new Game(arduboy);
+  Game::game->start();
+  //test();
+  arduboy.setCursor(0,0);
+  arduboy.print(F("Hello"));
+  arduboy.display();
   /*if(!arduboy.pressed(A_BUTTON))
   {
     sound.tone(NOTE_C5,50,NOTE_E7,150);
   }*/
-  arduboy.setCursor(0,0);
-  arduboy.print(F("Hello"));
-  arduboy.display();
+}
+
+void test()
+{
+  Serial.println(freeRam());
+  new Location*[5];
+  Serial.print("array ");
+  Serial.println(freeRam());
+  Location** locations = new Location*[5];
+  locations[0] = new Location(17, 16, Maps::loc);
+  Serial.print("main ");
+  Serial.println(freeRam());
+  locations[1] = new Location(6, 5, Maps::house);
+  Serial.print("house ");
+  Serial.println(freeRam());
+  locations[2] = new Location(6, 4, Maps::house2);
+  Serial.print("house2 ");
+  Serial.println(freeRam());
+  locations[3] = new Location(32, 16, Maps::farm);
+  Serial.print("farm ");
+  Serial.println(freeRam());
+  locations[4] = new Location(8, 5, Maps::farmhouse);
+  Serial.print("farmhouse ");
+  Serial.println(freeRam());
+  unsigned char* tileMap = new unsigned char[256]{};
+  Serial.print("tilemap ");
+  Serial.println(freeRam());
 }
 
 void loop() {
   if (!(arduboy.nextFrame()))
     return;
-  Game::game.tick();
+  Game::game->tick();
 }
 
 int freeRam () {
