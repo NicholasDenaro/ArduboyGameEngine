@@ -38,8 +38,9 @@ void Player::tick(Arduboy2 arduboy)
   
   if(arduboy.pressed(A_BUTTON))
   {
-    int shift = _dir - 1;
-    Game::game->location()->activateEntity(this, _x + 4 - shift * 6, _y + 4);
+    int xshift = _dir % 2 == 0 ? _dir - 1 : 0;
+    int yshift = _dir % 2 == 1 ? _dir - 2 : 0;
+    Game::game->location()->activateEntity(this, _x + 4 - xshift * 6, _y + 4 + yshift * 6);
   }
   
   Game::game->location()->activateEntity(this, _x + 4, _y + 4);
@@ -55,6 +56,16 @@ void Player::movePos(int dx, int dy)
   if(dx < 0)
   {
     _dir = 2;
+  }
+  
+  if(dy < 0)
+  {
+    _dir = 1;
+  }
+  
+  if(dy > 0)
+  {
+    _dir = 3;
   }
   
   int ii = _x + 4 + dx;

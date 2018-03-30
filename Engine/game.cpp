@@ -108,9 +108,11 @@ void Game::start()
   
   locations[0]->addEntity(new Door(8 * 8, 15 * 8, 4 * 8, 1 * 8, locations[5])); // to mine
   locations[5]->addEntity(new Door(4 * 8, 0 * 8, 8 * 8, 14 * 8, locations[0]));
+  locations[5]->addEntity(new Sign(3 * 8, 2 * 8, Texts::signMine));
   
   locations[0]->addEntity(new Door(16 * 8, 7 * 8, 1 * 8, 2 * 8, locations[6])); // to town
   locations[6]->addEntity(new Door(0 * 8, 2 * 8, 15 * 8, 7 * 8, locations[0]));
+  locations[6]->addEntity(new Sign(10 * 8, 3 * 8, Texts::signTown));
 }
 
 Location* Game::location()
