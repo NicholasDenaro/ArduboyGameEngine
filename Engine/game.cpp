@@ -1,4 +1,5 @@
 #include <Arduboy2.h>
+#include <ArduboyTones.h>
 #include "game.h"
 #include "drawer.h"
 #include "location.h"
@@ -15,9 +16,10 @@ Player* Game::player = NULL;
 
 Game::Game() {}
 
-Game::Game(Arduboy2 arduboy)
+Game::Game(Arduboy2* arduboy, ArduboyTones* sound)
 {
-  arduboy = arduboy;
+  this->arduboy = arduboy;
+  this->sound = sound;
   drawer = Drawer(arduboy);
   tiles = Entity(0, 0, StaticSprites::tileSprite);
   Game::player = new Player(8, 8, StaticSprites::playerSprite);
@@ -56,8 +58,8 @@ Game::Game(Arduboy2 arduboy)
 
 void Game::tick()
 {
-  arduboy.pollButtons();
-  arduboy.clear();
+  arduboy->pollButtons();
+  arduboy->clear();
 
   view.centerOn(*_location, *player);
   view.draw(drawer, *_location, tiles, tileMap);
@@ -76,13 +78,13 @@ void Game::tick()
     }
   }
 
-  if(arduboy.justPressed(A_BUTTON))
+  if(arduboy->justPressed(A_BUTTON))
   {
     counter++;
     Serial.println(freeRam());
   }
   
-  arduboy.display();
+  arduboy->display();
 }
 
 void Game::start()
@@ -135,8 +137,8 @@ int Game::imageIndex()
 
 void Game::showText(const char* text)
 {
-  arduboy.fillRect(0, HEIGHT - 16, WIDTH, 16, BLACK);
-  arduboy.setCursor(1, HEIGHT - 15);
+  arduboy->fillRect(0, HEIGHT - 16, WIDTH, 16, BLACK);
+  arduboy->setCursor(1, HEIGHT - 15);
   int count = 0;
   int lineStart = 0;
   int len = strlen_P(text);
@@ -144,36 +146,52 @@ void Game::showText(const char* text)
   for(int i = 0; i < len; i++)
   {
     ch = pgm_read_byte_near(text + i);
-    arduboy.print(ch);
-    int faster = arduboy.pressed(A_BUTTON) ? 3 : 1;
+    arduboy->print(ch);
+    int faster = arduboy->pressed(A_BUTTON) ? 6 : 3;
+    delay(100 / faster);
 
-    if(arduboy.pressed(B_BUTTON))
+    if(arduboy->pressed(B_BUTTON))
     {
       return;
     }
-    
-    delay(100 / faster);
-    arduboy.display();
-    if(arduboy.getCursorX() + 8 >= WIDTH)
+    uint16_t note = NOTE_B3;
+    if(i % 2 == 1)
+    {
+      note = NOTE_C4;
+    }
+    sound->tone(NOTE_REST,20 / faster, note,30 / faster);
+    arduboy->display();
+    if(arduboy->getCursorX() + 8 >= WIDTH)
     {
       if(count >= 1)
       {
-        arduboy.fillRect(0, HEIGHT - 16, WIDTH, 16, BLACK);
-        arduboy.setCursor(1, HEIGHT - 15);
-        for(int j = lineStart; j < len && arduboy.getCursorX() + 8 < WIDTH; j++)
+        arduboy->fillRect(0, HEIGHT - 16, WIDTH, 16, BLACK);
+        arduboy->setCursor(1, HEIGHT - 15);
+        for(int j = lineStart; j < len && arduboy->getCursorX() + 8 < WIDTH; j++)
         {
           ch = pgm_read_byte_near(text + j);
-          arduboy.print(ch);
+          arduboy->print(ch);
         }
       }
       
       count++;
-      arduboy.setCursor(1, HEIGHT - 15 + (count > 0 ? 8 : 0));
+      arduboy->setCursor(1, HEIGHT - 15 + (count > 0 ? 8 : 0));
       lineStart = i + 1;
     }
   }
-  while(arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)){}
-  while(!arduboy.pressed(A_BUTTON) && !arduboy.pressed(B_BUTTON)){}
-  while(arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON)){}
+  
+  waitForButtonNotPressed();
+  waitForButtonPressed();
+  waitForButtonNotPressed();
+}
+
+void Game::waitForButtonPressed()
+{
+  while(!arduboy->pressed(A_BUTTON) && !arduboy->pressed(B_BUTTON)){}
+}
+
+void Game::waitForButtonNotPressed()
+{
+  while(arduboy->pressed(A_BUTTON) || arduboy->pressed(B_BUTTON)){}
 }
 

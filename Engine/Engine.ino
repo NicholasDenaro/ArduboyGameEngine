@@ -1,28 +1,28 @@
 #include <Arduboy2.h>
 #include <ArduboyTones.h>
+
+Arduboy2* arduboy = new Arduboy2();
+ArduboyTones* sound = new ArduboyTones(arduboy->audio.enabled);
 #include "game.h"
 
-Arduboy2 arduboy;
-ArduboyTones sound(arduboy.audio.enabled);
+const uint16_t startupTone[] PROGMEM = {NOTE_B6,20,NOTE_C5,60,NOTE_REST,50,NOTE_F7,300, TONES_END};
 
 void setup() {
   // put your setup code here, to run once:
-  arduboy.begin();
-  arduboy.setFrameRate(30);
-  arduboy.clear();
+  arduboy->begin();
+  arduboy->setFrameRate(30);
+  arduboy->clear();
   
   Serial.begin(9600);
   Serial.println(freeRam());
-  Game::game = new Game(arduboy);
+  Game::game = new Game(arduboy, sound);
   Game::game->start();
   //test();
-  arduboy.setCursor(0,0);
-  arduboy.print(F("Hello"));
-  arduboy.display();
-  /*if(!arduboy.pressed(A_BUTTON))
-  {
-    sound.tone(NOTE_C5,50,NOTE_E7,150);
-  }*/
+  arduboy->setCursor(0,0);
+  arduboy->print(F("Hello"));
+  arduboy->display();
+  
+  sound->tones(startupTone);
 }
 
 void test()
@@ -53,7 +53,7 @@ void test()
 }
 
 void loop() {
-  if (!(arduboy.nextFrame()))
+  if (!(arduboy->nextFrame()))
     return;
   Game::game->tick();
 }

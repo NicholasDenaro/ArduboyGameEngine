@@ -47,7 +47,7 @@ int Location::height()
   return this->_height;
 }
 
-void Location::tick(Arduboy2 arduboy)
+void Location::tick(Arduboy2* arduboy)
 {
   for(int i = 0; i < _entitiesLength; i++)
   {

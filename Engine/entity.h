@@ -13,7 +13,7 @@ class Entity
   public:
   Entity();
   Entity(int x, int y, Sprite* sprite);
-  virtual void tick(Arduboy2 arduboy);
+  virtual void tick(Arduboy2* arduboy);
   void setPos(int x, int y);
   int x();
   int y();

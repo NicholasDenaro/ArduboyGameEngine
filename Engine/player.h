@@ -12,7 +12,7 @@ class Player : public Entity
   bool moved;
   Player();
   Player(int x, int y, Sprite* sprite);
-  void tick(Arduboy2 arduboy) override;
+  void tick(Arduboy2* arduboy) override;
   void movePos(int dx, int dy);
   int dir();
   int imageIndex(int index) override;

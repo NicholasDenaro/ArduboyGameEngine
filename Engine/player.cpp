@@ -9,34 +9,34 @@ Player::Player(int x, int y, Sprite* sprite) : Entity(x, y, sprite)
   moved = false;
 }
 
-void Player::tick(Arduboy2 arduboy)
+void Player::tick(Arduboy2* arduboy)
 {
   moved = false;
-  if(arduboy.pressed(LEFT_BUTTON))
+  if(arduboy->pressed(LEFT_BUTTON))
   {
     movePos(-1,0);
     moved = true;
   }
   
-  if(arduboy.pressed(RIGHT_BUTTON))
+  if(arduboy->pressed(RIGHT_BUTTON))
   {
     movePos(1,0);
     moved = true;
   }
   
-  if(arduboy.pressed(UP_BUTTON))
+  if(arduboy->pressed(UP_BUTTON))
   {
     movePos(0,-1);
     moved = true;
   }
   
-  if(arduboy.pressed(DOWN_BUTTON))
+  if(arduboy->pressed(DOWN_BUTTON))
   {
     movePos(0,1);
     moved = true;
   }
   
-  if(arduboy.pressed(A_BUTTON))
+  if(arduboy->pressed(A_BUTTON))
   {
     int xshift = _dir % 2 == 0 ? _dir - 1 : 0;
     int yshift = _dir % 2 == 1 ? _dir - 2 : 0;

@@ -2,7 +2,7 @@
 
 Drawer::Drawer(){}
 
-Drawer::Drawer(Arduboy2 arduboy)
+Drawer::Drawer(Arduboy2* arduboy)
 {
   this->arduboy = arduboy;
 }
@@ -14,7 +14,7 @@ void Drawer::draw(View view, Entity entity, int index, int color)
   {
     const unsigned char *pixels = sprite->bytes();
     int offset = index * sprite->width() * sprite->height() / 8;
-    this->arduboy.drawBitmap(entity.x() - view.x(), entity.y() - view.y(), pixels + offset, sprite->width(), sprite->height(), color);
+    this->arduboy->drawBitmap(entity.x() - view.x(), entity.y() - view.y(), pixels + offset, sprite->width(), sprite->height(), color);
   }
 }
 

@@ -17,7 +17,7 @@ class Location
   Location();
   Location(int width, int height, const unsigned char* tiles);
   unsigned char getTile(int x, int y);
-  void tick(Arduboy2 arduboy);
+  void tick(Arduboy2* arduboy);
   int width();
   int height();
   bool addEntity(Entity* entity);

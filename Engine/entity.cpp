@@ -9,7 +9,7 @@ Entity::Entity(int x, int y, Sprite* sprite)
   this->setPos(x, y);
 }
 
-void Entity::tick(Arduboy2 arduboy)
+void Entity::tick(Arduboy2* arduboy)
 {
   
 }
