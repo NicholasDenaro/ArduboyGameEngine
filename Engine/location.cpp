@@ -2,14 +2,16 @@
 #include "location.h"
 #include <avr/pgmspace.h>
 
+int freeRam ();
+
 Location::Location() : Location(8, 8, new unsigned char[64]) {}
 
-Location::Location(int width, int height, const unsigned char* tiles)
+Location::Location(int width, int height, const unsigned char* tiles, byte entCount = 10)
 {
   this->_width = width;
   this->_height = height;
   this->tiles = tiles;
-  _entitiesLength = 10;
+  _entitiesLength = entCount;
   entities = new Entity*[_entitiesLength];
   if(entities != NULL)
   {
@@ -21,7 +23,7 @@ Location::Location(int width, int height, const unsigned char* tiles)
   else
   {
     _entitiesLength = 0;
-    Serial.println("couldn't create array");
+    Serial.println(F("couldn't create array "));
   }
   entityCount = 0;
 }
@@ -62,7 +64,8 @@ bool Location::addEntity(Entity* entity)
 {
   if(entity == NULL)
   {
-    Serial.println("OOM?");
+    Serial.println(F("Won't add null entity"));
+    return false;
   }
   
   if(entityCount < _entitiesLength)
@@ -77,6 +80,8 @@ bool Location::addEntity(Entity* entity)
       }
     }
   }
+
+  Serial.println(F("Location is already full of entities"));
   
   return false;
 }
@@ -117,9 +122,6 @@ bool Location::activateEntity(Entity* entity, int x, int y)
       int enty = ent->y() + 4;
       int xdiff = entx - x;
       int ydiff = enty - y;
-      /*Serial.print(xdiff);
-      Serial.print(",");
-      Serial.println(ydiff);*/
       if(xdiff > -4 && xdiff < 4 && ydiff > -4 && ydiff < 4)
       {
         entities[i]->activate();

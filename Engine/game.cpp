@@ -23,6 +23,7 @@ Game::Game(Arduboy2* arduboy, ArduboyTones* sound)
   drawer = Drawer(arduboy);
   tiles = Entity(0, 0, StaticSprites::tileSprite);
   Game::player = new Player(8, 8, StaticSprites::playerSprite);
+  Serial.print(F("sizeof(player): ")); Serial.println(sizeof(*Game::player));
   view = View(WIDTH, HEIGHT);
   _imageIndex = 0;
   tileMap = new unsigned char[256];
@@ -45,11 +46,11 @@ Game::Game(Arduboy2* arduboy, ArduboyTones* sound)
   tileMap['d'] = 23;
   locations = new Location*[7];
   locations[0] = new Location(17, 16, Maps::loc);
-  locations[1] = new Location(6, 5, Maps::house);
-  locations[2] = new Location(5, 4, Maps::house2);
+  locations[1] = new Location(6, 5, Maps::house, 3);
+  locations[2] = new Location(5, 4, Maps::house2, 3);
   locations[3] = new Location(32, 14, Maps::farm);
-  locations[4] = new Location(8, 5, Maps::farmhouse);
-  locations[5] = new Location(8, 5, Maps::mine);
+  locations[4] = new Location(8, 5, Maps::farmhouse, 6);
+  locations[5] = new Location(8, 5, Maps::mine, 3);
   locations[6] = new Location(15, 5, Maps::town);
   _location = locations[4];
   counter = 0;

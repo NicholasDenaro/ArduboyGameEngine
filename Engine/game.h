@@ -29,7 +29,7 @@ namespace Texts
   static const PROGMEM char signToFarm[] = {"North to Farm"};
   static const PROGMEM char signToMine[] = {"South to Mines"};
   static const PROGMEM char signToTown[] = {"East to Town"};
-  static const PROGMEM char signMine[] = {"Mine is closed"};
+  static const PROGMEM char signMine[] = {"The mine is closed"};
   static const PROGMEM char signTown[] = {"Welcome to town!"};
 
   

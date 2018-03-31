@@ -40,7 +40,7 @@ void Player::tick(Arduboy2* arduboy)
   {
     int xshift = _dir % 2 == 0 ? _dir - 1 : 0;
     int yshift = _dir % 2 == 1 ? _dir - 2 : 0;
-    Game::game->location()->activateEntity(this, _x + 4 - xshift * 6, _y + 4 + yshift * 6);
+    Game::game->location()->activateEntity(this, _x + 4 - xshift * 7, _y + 4 + yshift * 7);
   }
   
   Game::game->location()->activateEntity(this, _x + 4, _y + 4);

@@ -8,14 +8,14 @@ class Location
   private:
   int _width;
   int _height;
-  unsigned char* tiles;
+  const unsigned char* tiles;
   Entity** entities;
   int _entitiesLength;
   int entityCount;
 
   public:
   Location();
-  Location(int width, int height, const unsigned char* tiles);
+  Location(int width, int height, const unsigned char* tiles, byte entCount = 10);
   unsigned char getTile(int x, int y);
   void tick(Arduboy2* arduboy);
   int width();
